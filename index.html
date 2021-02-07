@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Page Title</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-analytics.js"></script>
+</head>
+<body>
+    
+    <div id="initpopup" style="text-align:center; margin-top: 20%; background-color:#ededed; border-radius: 10px;padding: 10px;" >
+        <h1>Soundscape of Your Love<h1>
+        <input value="" id="nameinp" placeholder="Enter Your Name" style="font-size: 15px;  border-radius: 20px; border: 0; background-color: #cbe1ef; padding: 12px"></input>
+        <input value="" id="locinp" placeholder="Enter Your State" style="font-size: 15px;  border-radius: 20px; border: 0; background-color: #cbe1ef; padding: 12px"></input>
+        <button onclick="save()" style="border-radius:15px;padding:10px;background-color:#ffddd3;border:0">Enter</button><br>
+    </div>
+    <div id="main" style="visibility: hidden; display: flex;">
+          <p id="username"> </p>
+          <p id="loc"> <p> 
+          <a href="https://vocaroo.com" target="_blank"><button style="border:0;background-color: #ffddd3; border-radius:15px; padding:5px"> Record Audio</button></a>
+          <input id="link" placeholder=" Enter Link " style="background-color:#cbe1ef; border:0;border-radius: 15px; font-size: 15px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif ; padding: 5px"></input>
+          <button onclick="saveaud()" style="border:0;background-color:#ffddd3; border-radius:15px; padding:5px;border-radius:15px; padding:5px"> Save Audio </button><br>
+          <div id="list"></div>
+   </div>
+
+</body>
+<script>
+
+var firebaseConfig = {
+  apiKey: "AIzaSyBEKIcWaY6R9xaH2jluJAKrMt1Q_m-1ZtQ",
+  authDomain: "audioapp-b3554.firebaseapp.com",
+  projectId: "audioapp-b3554",
+  databaseURL: "https://audioapp-b3554-default-rtdb.firebaseio.com",
+  storageBucket: "audioapp-b3554.appspot.com",
+  messagingSenderId: "686111799906",
+  appId: "1:686111799906:web:5e81360155d2a31a186f3b",
+  measurementId: "G-2XV8Y5LTT0"
+};
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+firebase.analytics();
+
+var main = document.getElementById("main");
+  var initpopup = document.getElementById("initpopup");
+
+  var namee= document.getElementById("username");
+  var locinp= document.getElementById("locinp");
+
+  var nameinp= document.getElementById("nameinp");
+var loc= document.getElementById("loc");
+var audlink= document.getElementById("link");
+
+
+ 
+function save(){
+firebase.database().ref('users/' +nameinp.value+"/Location").set(locinp.value);
+initpopup.style.display = 'none';
+
+main.style.visibility = 'visible';
+}
+
+function saveaud(){
+  firebase.database().ref('users/' + nameinp.value+"/audiofile").set(audlink.value);
+  showlist()
+}
+function showlist(){
+  var dbref = firebase.database().ref().child("users");
+  list = document.getElementById("list");
+
+dbref.on('value', (snapshot) => {
+  list.innerHTML = "";
+  snapshot.forEach((childSnapshot) => {
+    var name = childSnapshot.key;
+    console.log(name)
+    list.innerHTML+=`<div style="background-color:#ededed"> 
+        <p> Name:`+name+`</p><br>
+        <p> Location: `+childSnapshot.val().Location+`<p><br>
+        <a href="`+childSnapshot.val().audiofile+`" target="_blank"> <button> Play Audio </button>
+      </div>`
+    
+  });
+});
+}
+
+</script>
+
+</html>
