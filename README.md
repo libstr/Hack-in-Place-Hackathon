@@ -11,11 +11,11 @@ Javascript
 Vocaroo.com 
 Codesandbox.io
 ## Authors (in no particular order)
-Libin Joseph
-Kayvon Crenshaw
-Harry Zhu
-Ivan Yung
-Qi Zhang
-Eric Asare 
+Libin Joseph, 
+Kayvon Crenshaw,
+Harry Zhu,
+Ivan Yung,
+Qi Zhang,
+Eric Asare, 
 ## Acknowledgement 
 Thank you to Hack in Place 2.0
